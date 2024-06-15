@@ -9,8 +9,20 @@
     font-size: 18px;
 }
 
+table {
+    width: 100%;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #000;
+}
+
 body {
     font-family: system-ui;
+    max-width: 700px;
+    margin: auto;
+    padding: 10px;
 }
 
 input[type="number"] {
@@ -19,10 +31,10 @@ input[type="number"] {
 </style>
 <script type="text/javascript">
 function init() {
-    document.getElementById("format_w").value      = "22";
-    document.getElementById("format_h").value      = "11.88";
-    document.getElementById("focus_dist_ft").value = "9";
-    document.getElementById("focus_dist_in").value = "6";
+    document.getElementById("format_w").value      = "24";
+    document.getElementById("format_h").value      = "18";
+    document.getElementById("focus_dist_ft").value = "10";
+    document.getElementById("focus_dist_in").value = "0";
     document.getElementById("aperture").value      = "2";
     document.getElementById("focal_len").value     = "50";
 }
@@ -48,12 +60,11 @@ function update() {
     const far_limit_ft_in = mm_to_ft_in(far_limit);
     const dof_ft_in = mm_to_ft_in(dof);
 
-    document.getElementById("res").innerHTML =
-`DoF: ${dof_ft_in[0]}'${dof_ft_in[1].toFixed(1)}"<br>
-CoC Limit: ${coc_limit.toFixed(5)}mm<br>
-Near Limit: ${near_limit_ft_in[0]}'${near_limit_ft_in[1].toFixed(1)}"<br>
-Far Limit: ${far_limit_ft_in[0]}'${far_limit_ft_in[1].toFixed(1)}"<br>
-Hyperfocal Distance: ${hyperfocal_dist_ft_in[0]}'${hyperfocal_dist_ft_in[1].toFixed(1)}"`;
+    document.getElementById("dof_res").innerText = `${dof_ft_in[0]} ft ${dof_ft_in[1].toFixed(1)} in`;
+    document.getElementById("coc_res").innerText = `${coc_limit.toFixed(4)}mm`;
+    document.getElementById("nl_res").innerText  = `${near_limit_ft_in[0]} ft ${near_limit_ft_in[1].toFixed(1)} in`;
+    document.getElementById("fl_res").innerText  = `${far_limit_ft_in[0]} ft ${far_limit_ft_in[1].toFixed(1)} in`;
+    document.getElementById("hd_res").innerText  = `${hyperfocal_dist_ft_in[0]} ft ${hyperfocal_dist_ft_in[1].toFixed(1)} in`;
 }
 
 function ft_in_to_mm(ft_in) {
@@ -68,26 +79,63 @@ function mm_to_ft_in(mm) {
 </head>
 <body onload="init(); update()">
     <noscript>This page requires JavaScript.</noscript>
-    <label for="format_w">Format (mm) w</label>
-    <input oninput="update()" type="number" id="format_w" min="0">
-    <label for="format_h">h</label>
-    <input oninput="update()" type="number" id="format_h" min="0">
-    <br>
 
-    <label for="focus_dist_ft">Focus Distance ft</label>
-    <input oninput="update()" type="number" id="focus_dist_ft" min="0">
-    <label for="focus_dist_in">in</label>
-    <input oninput="update()" type="number" id="focus_dist_in" min="0">
-    <br>
+    <table>
+        <tr>
+            <td>Format (mm)</td>
+            <td>
+                <label for="format_w">w</label>
+                <input oninput="update()" type="number" id="format_w" min="0">
+                <label for="format_h">h</label>
+                <input oninput="update()" type="number" id="format_h" min="0">
+            </td>
+        </tr>
+        <tr>
+            <td>Focus Distance</td>
+            <td>
+                <input oninput="update()" type="number" id="focus_dist_ft" min="0">
+                <label for="focus_dist_ft">ft</label>
+                <input oninput="update()" type="number" id="focus_dist_in" min="0" max="12">
+                <label for="focus_dist_in">in</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Aperture</td>
+            <td>
+                <label for="aperture">f/</label>
+                <input oninput="update()" type="number" id="aperture" min="0.7" step="0.1">
+            </td>
+        </tr>
+        <tr>
+            <td>Focal Length</td>
+            <td>
+                <input oninput="update()" type="number" id="focal_len" min="0">
+                <label for="focal_len">mm</label>
+            </td>
+        </tr>
+    </table>
 
-    <label for="aperture">Aperture</label>
-    <input oninput="update()" type="number" id="aperture" min="0">
-    <br>
-
-    <label for="focal_len">Focal Length</label>
-    <input oninput="update()" type="number" id="focal_len" min="0">
-    <br>
-
-    <div id="res">
+    <table>
+        <tr>
+            <td>DoF</td>
+            <td id="dof_res">something</td>
+        </tr>
+        <tr>
+            <td>CoC Limit</td>
+            <td id="coc_res">something</td>
+        </tr>
+        <tr>
+            <td>Near Limit</td>
+            <td id="nl_res">something</td>
+        </tr>
+        <tr>
+            <td>Far Limit</td>
+            <td id="fl_res">something</td>
+        </tr>
+        <tr>
+            <td>Hyperfocal Distance</td>
+            <td id="hd_res">something</td>
+        </tr>
+    </table>
 </body>
 </html>
