@@ -33,19 +33,19 @@ input[type="number"] {
 function init() {
     document.getElementById("format_w").value      = "24";
     document.getElementById("format_h").value      = "18";
+    document.getElementById("focal_len").value     = "50";
+    document.getElementById("aperture").value      = "2";
     document.getElementById("focus_dist_ft").value = "10";
     document.getElementById("focus_dist_in").value = "0";
-    document.getElementById("aperture").value      = "2";
-    document.getElementById("focal_len").value     = "50";
 }
 
 function update() {
     const format_w      = document.getElementById("format_w").value;
     const format_h      = document.getElementById("format_h").value;
+    const focal_len     = document.getElementById("focal_len").value;
+    const aperture      = document.getElementById("aperture").value;
     const focus_dist_ft = document.getElementById("focus_dist_ft").value;
     const focus_dist_in = document.getElementById("focus_dist_in").value;
-    const aperture      = document.getElementById("aperture").value;
-    const focal_len     = document.getElementById("focal_len").value;
 
     const coc_limit = Math.hypot(format_w, format_h) / 1500.0;
     const focus_dist = ft_in_to_mm([focus_dist_ft, focus_dist_in]);
@@ -91,12 +91,10 @@ function mm_to_ft_in(mm) {
             </td>
         </tr>
         <tr>
-            <td>Focus Distance</td>
+            <td>Focal Length</td>
             <td>
-                <input oninput="update()" type="number" id="focus_dist_ft" min="0">
-                <label for="focus_dist_ft">ft</label>
-                <input oninput="update()" type="number" id="focus_dist_in" min="0" max="12">
-                <label for="focus_dist_in">in</label>
+                <input oninput="update()" type="number" id="focal_len" min="0">
+                <label for="focal_len">mm</label>
             </td>
         </tr>
         <tr>
@@ -107,10 +105,12 @@ function mm_to_ft_in(mm) {
             </td>
         </tr>
         <tr>
-            <td>Focal Length</td>
+            <td>Focus Distance</td>
             <td>
-                <input oninput="update()" type="number" id="focal_len" min="0">
-                <label for="focal_len">mm</label>
+                <input oninput="update()" type="number" id="focus_dist_ft" min="0">
+                <label for="focus_dist_ft">ft</label>
+                <input oninput="update()" type="number" id="focus_dist_in" min="0" max="12">
+                <label for="focus_dist_in">in</label>
             </td>
         </tr>
     </table>
