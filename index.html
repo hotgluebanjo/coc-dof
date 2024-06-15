@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picker</title>
+<style type="text/css">
+* {
+    font-size: 18px;
+}
+
+body {
+    font-family: system-ui;
+}
+
+input[type="number"] {
+    width: 50px;
+}
+</style>
+<script type="text/javascript">
+function init() {
+    document.getElementById("format_w").value      = "22";
+    document.getElementById("format_h").value      = "11.88";
+    document.getElementById("focus_dist_ft").value = "9";
+    document.getElementById("focus_dist_in").value = "6";
+    document.getElementById("aperture").value      = "2";
+    document.getElementById("focal_len").value     = "50";
+}
+
+function update() {
+    const format_w      = document.getElementById("format_w").value;
+    const format_h      = document.getElementById("format_h").value;
+    const focus_dist_ft = document.getElementById("focus_dist_ft").value;
+    const focus_dist_in = document.getElementById("focus_dist_in").value;
+    const aperture      = document.getElementById("aperture").value;
+    const focal_len     = document.getElementById("focal_len").value;
+
+    const coc_limit = Math.hypot(format_w, format_h) / 1500.0;
+    const focus_dist = ft_in_to_mm([focus_dist_ft, focus_dist_in]);
+
+    const hyperfocal_dist = Math.pow(focal_len, 2) / (aperture * coc_limit);
+    const near_limit = (hyperfocal_dist * focus_dist) / (hyperfocal_dist + (focus_dist - focal_len));
+    const far_limit = (hyperfocal_dist * focus_dist) / (hyperfocal_dist - (focus_dist - focal_len));
+    const dof = far_limit - near_limit;
+
+    const hyperfocal_dist_ft_in = mm_to_ft_in(hyperfocal_dist);
+    const near_limit_ft_in = mm_to_ft_in(near_limit);
+    const far_limit_ft_in = mm_to_ft_in(far_limit);
+    const dof_ft_in = mm_to_ft_in(dof);
+
+    document.getElementById("res").innerHTML =
+`DoF: ${dof_ft_in[0]}'${dof_ft_in[1].toFixed(1)}"<br>
+CoC Limit: ${coc_limit.toFixed(5)}mm<br>
+Near Limit: ${near_limit_ft_in[0]}'${near_limit_ft_in[1].toFixed(1)}"<br>
+Far Limit: ${far_limit_ft_in[0]}'${far_limit_ft_in[1].toFixed(1)}"<br>
+Hyperfocal Distance: ${hyperfocal_dist_ft_in[0]}'${hyperfocal_dist_ft_in[1].toFixed(1)}"`;
+}
+
+function ft_in_to_mm(ft_in) {
+    return (+ft_in[0] + +ft_in[1] / 12) / 0.00328084;
+}
+
+function mm_to_ft_in(mm) {
+    const ft = mm * 0.00328084;
+    return [Math.trunc(ft), (ft - Math.trunc(ft)) * 12];
+}
+</script>
+</head>
+<body onload="init(); update()">
+    <noscript>This page requires JavaScript.</noscript>
+    <label for="format_w">Format (mm) w</label>
+    <input oninput="update()" type="number" id="format_w" min="0">
+    <label for="format_h">h</label>
+    <input oninput="update()" type="number" id="format_h" min="0">
+    <br>
+
+    <label for="focus_dist_ft">Focus Distance ft</label>
+    <input oninput="update()" type="number" id="focus_dist_ft" min="0">
+    <label for="focus_dist_in">in</label>
+    <input oninput="update()" type="number" id="focus_dist_in" min="0">
+    <br>
+
+    <label for="aperture">Aperture</label>
+    <input oninput="update()" type="number" id="aperture" min="0">
+    <br>
+
+    <label for="focal_len">Focal Length</label>
+    <input oninput="update()" type="number" id="focal_len" min="0">
+    <br>
+
+    <div id="res">
+</body>
+</html>
