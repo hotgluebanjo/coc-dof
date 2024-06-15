@@ -61,7 +61,7 @@ function update() {
     const dof_ft_in = mm_to_ft_in(dof);
 
     document.getElementById("dof_res").innerText = `${dof_ft_in[0]} ft ${dof_ft_in[1].toFixed(1)} in`;
-    document.getElementById("coc_res").innerText = `${coc_limit.toFixed(4)}mm`;
+    document.getElementById("coc_res").innerText = `${coc_limit.toFixed(4)} mm`;
     document.getElementById("nl_res").innerText  = `${near_limit_ft_in[0]} ft ${near_limit_ft_in[1].toFixed(1)} in`;
     document.getElementById("fl_res").innerText  = `${far_limit_ft_in[0]} ft ${far_limit_ft_in[1].toFixed(1)} in`;
     document.getElementById("hd_res").innerText  = `${hyperfocal_dist_ft_in[0]} ft ${hyperfocal_dist_ft_in[1].toFixed(1)} in`;
