@@ -60,11 +60,15 @@ function update() {
     const far_limit_ft_in = mm_to_ft_in(far_limit);
     const dof_ft_in = mm_to_ft_in(dof);
 
-    document.getElementById("dof_res").innerText = `${dof_ft_in[0]} ft ${dof_ft_in[1].toFixed(1)} in`;
-    document.getElementById("coc_res").innerText = `${coc_limit.toFixed(4)} mm`;
-    document.getElementById("nl_res").innerText  = `${near_limit_ft_in[0]} ft ${near_limit_ft_in[1].toFixed(1)} in`;
-    document.getElementById("fl_res").innerText  = `${far_limit_ft_in[0]} ft ${far_limit_ft_in[1].toFixed(1)} in`;
-    document.getElementById("hd_res").innerText  = `${hyperfocal_dist_ft_in[0]} ft ${hyperfocal_dist_ft_in[1].toFixed(1)} in`;
+    document.getElementById("dof_res").innerText = `${dof_ft_in[0]} ft ${round(dof_ft_in[1], 1)} in`;
+    document.getElementById("coc_res").innerText = `${round(coc_limit, 4)} mm`;
+    document.getElementById("nl_res").innerText  = `${near_limit_ft_in[0]} ft ${round(near_limit_ft_in[1], 1)} in`;
+    document.getElementById("fl_res").innerText  = `${far_limit_ft_in[0]} ft ${round(far_limit_ft_in[1], 1)} in`;
+    document.getElementById("hd_res").innerText  = `${hyperfocal_dist_ft_in[0]} ft ${round(hyperfocal_dist_ft_in[1], 1)} in`;
+}
+
+function round(x, n) {
+    return +x.toFixed(n);
 }
 
 function ft_in_to_mm(ft_in) {
@@ -82,18 +86,18 @@ function mm_to_ft_in(mm) {
 
     <table>
         <tr>
-            <td>Format (mm)</td>
+            <td>Format</td>
             <td>
-                <label for="format_w">w</label>
-                <input oninput="update()" type="number" id="format_w" min="0">
-                <label for="format_h">h</label>
-                <input oninput="update()" type="number" id="format_h" min="0">
+                <input oninput="update()" type="number" id="format_w" min="1">
+                <label>&times;</label>
+                <input oninput="update()" type="number" id="format_h" min="1">
+                <label>mm</label>
             </td>
         </tr>
         <tr>
             <td>Focal Length</td>
             <td>
-                <input oninput="update()" type="number" id="focal_len" min="0">
+                <input oninput="update()" type="number" id="focal_len" min="1">
                 <label for="focal_len">mm</label>
             </td>
         </tr>
